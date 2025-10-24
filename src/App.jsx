@@ -6,7 +6,7 @@ import Encabezado from "./components/navegacion/Encabezado";
 import Login from "./views/Login";
 import Inicio from "./views/Inicio";
 import Categorias from "./views/Categorias";
-import Productos from "./views/Producto";
+import Productos from "./views/Productos";
 import Catalogo from "./views/Catalogo";
 import Empleados from "./views/Empleados";
 import Compras from "./views/Compras";

@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
-import TablaUsuarios from "../components/usuarios/TablaUsuarios";
 import { Container } from "react-bootstrap";
+import TablaProductos from "../components/productos/TablaProductos";
 
-const Usuarios = () => {
-  const [usuarios, setUsuarios] = useState([]);
+const Productos = () => {
+  const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
-  const obtenerUsuarios = async () => {
+  const obtenerProductos = async () => {
     try {
-      const respuesta = await fetch("http://localhost:3000/API/usuarios");
+      const respuesta = await fetch("http://localhost:3000/API/productos");
       if (!respuesta.ok) {
-        throw new Error("Error al obtener los usuarios");
+        throw new Error("Error al obtener los productos");
       }
       const datos = await respuesta.json();
-      setUsuarios(datos);
+      setProductos(datos);
       setCargando(false);
     } catch (error) {
       console.long(error.message);
@@ -21,18 +21,18 @@ const Usuarios = () => {
   }
 
   useEffect(() => {
-    obtenerUsuarios();
+    obtenerProductos();
   }, []);
   return (
     <>
     <Container className="mt-4">
-        <h4>Usuarios</h4>
-        <TablaUsuarios 
-        usuarios={usuarios} 
+        <h4>Productos</h4>
+        <TablaProductos 
+        productos={productos} 
         cargando={cargando}
         />
     </Container>
     </>
   );
-} 
-export default Usuarios;
+}
+export default Productos;
