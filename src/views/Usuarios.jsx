@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import TablaUsuarios from "../components/usuarios/TablaUsuarios";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
-import ModalRegistroUsuarios from "../components/usuarios/ModalRegistroUsuarios";
+import ModalRegistroUsuarios from "../components/usuarios/ModalRegistroUsuario";
 
 const Usuarios = () => {
   const [usuarios, setUsuarios] = useState([]);

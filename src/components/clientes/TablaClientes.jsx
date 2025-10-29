@@ -1,4 +1,5 @@
 import { Table, Spinner } from "react-bootstrap";
+import BotonOrden from "../ordenamiento/BotonOrden";
 
 const Tablaclientes = ({ clientes, cargando }) => {
 
