@@ -2,11 +2,11 @@ import { Table, Spinner } from "react-bootstrap";
 import BotonOrden from "../ordenamiento/BotonOrden";
 import React, { useState } from "react";
 
+
+
 const TablaCategorias = ({ categorias, cargando }) => {
-  const [orden, setOrden] = useState({
-    campo: "id_categoria",
-    direccion: "asc",
-  });
+
+  const [orden, setOrden] = useState({ campo: "id_categoria", direccion: "asc" });
 
   const manejarOrden = (campo) => {
     setOrden((prev) => ({
@@ -28,45 +28,35 @@ const TablaCategorias = ({ categorias, cargando }) => {
     return orden.direccion === "asc" ? comparacion : -comparacion;
   });
 
+
+
   if (cargando) {
     return (
       <>
-        <Spinner animation="border">
+        <Spinner animation="border" role="status">
           <span className="visually-hidden">Cargando...</span>
         </Spinner>
       </>
     );
   }
 
-  return (
+  return (  
     <>
-      <Table striped bordered hover>
+      <Table variant="success" striped bordered hover>
         <thead>
           <tr>
-            <BotonOrden
-              campo="id_categoria"
-              orden={orden}
-              manejarOrden={manejarOrden}
-            >
+            <BotonOrden campo="id_categoria" orden={orden} manejarOrden={manejarOrden}>
               ID
             </BotonOrden>
 
-            <BotonOrden
-              campo="nombre_categoria"
-              orden={orden}
-              manejarOrden={manejarOrden}
-            >
+            <BotonOrden campo="nombre_categoria" orden={orden} manejarOrden={manejarOrden}>
               Nombre Categoría
             </BotonOrden>
 
-            <BotonOrden
-              campo="descripcion_categoria"
-              orden={orden}
-              manejarOrden={manejarOrden}
-            >
+            <BotonOrden campo="descripcion_categoria" orden={orden} manejarOrden={manejarOrden}>
               Descripción Categoría
             </BotonOrden>
-            <th>Acciones</th>
+
           </tr>
         </thead>
         <tbody>
@@ -76,7 +66,7 @@ const TablaCategorias = ({ categorias, cargando }) => {
                 <td>{categoria.id_categoria}</td>
                 <td>{categoria.nombre_categoria}</td>
                 <td>{categoria.descripcion_categoria}</td>
-                <td>Accion</td>
+                <td>Acción</td>
               </tr>
             );
           })}
@@ -84,6 +74,6 @@ const TablaCategorias = ({ categorias, cargando }) => {
       </Table>
     </>
   );
-};
+}
 
 export default TablaCategorias;
