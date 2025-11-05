@@ -1,9 +1,18 @@
-import { Table, Spinner } from "react-bootstrap";
+import { Table, Spinner, Button } from "react-bootstrap";
 import { useState } from "react";
 import BotonOrden from "../ordenamiento/BotonOrden";
+import Paginacion from "../ordenamiento/Paginacion";
 
-const TablaUsuarios = ({ usuarios, cargando }) => {
-
+const TablaUsuarios = ({
+  usuarios,
+  cargando,
+  abrirModalEdicion,
+  abrirModalEliminacion,
+  totalElementos,
+  elementosPorPagina,
+  paginaActual,
+  establecerPaginaActual,
+}) => {
   const [orden, setOrden] = useState({ campo: "id_usuario", direccion: "asc" });
 
   const manejarOrden = (campo) => {
@@ -41,18 +50,33 @@ const TablaUsuarios = ({ usuarios, cargando }) => {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <BotonOrden campo="id_usuario" orden={orden} manejarOrden={manejarOrden}>
+            <BotonOrden
+              campo="id_usuario"
+              orden={orden}
+              manejarOrden={manejarOrden}
+            >
               ID
             </BotonOrden>
 
-            <BotonOrden campo="usuario" orden={orden} manejarOrden={manejarOrden}>
+            <BotonOrden
+              campo="usuario"
+              orden={orden}
+              manejarOrden={manejarOrden}
+            >
               Nombre usuario
             </BotonOrden>
 
-            <BotonOrden campo="contraseña" orden={orden} manejarOrden={manejarOrden}>
+            <BotonOrden
+              campo="contraseña"
+              orden={orden}
+              manejarOrden={manejarOrden}
+            >
               Contraseña
             </BotonOrden>
 
+            <BotonOrden campo="" orden={orden} manejarOrden={manejarOrden}>
+              Acciones
+            </BotonOrden>
           </tr>
         </thead>
         <tbody>
@@ -62,14 +86,38 @@ const TablaUsuarios = ({ usuarios, cargando }) => {
                 <td>{usuario.id_usuario}</td>
                 <td>{usuario.usuario}</td>
                 <td>{usuario.contraseña}</td>
-                <td>Acción</td>
+                <td>
+                  <Button
+                    variant="outline-warning"
+                    size="sm"
+                    className="me-2"
+                    onClick={() => abrirModalEdicion(usuario)}
+                  >
+                    <i className="bi bi-pencil"></i>
+                  </Button>
+
+                  <Button
+                    variant="outline-danger"
+                    size="sm"
+                    onClick={() => abrirModalEliminacion(usuario)}
+                  >
+                    <i className="bi bi-trash"></i>
+                  </Button>
+                </td>
               </tr>
             );
           })}
         </tbody>
       </Table>
+
+      <Paginacion
+        elementosPorPagina={elementosPorPagina}
+        totalElementos={totalElementos}
+        paginaActual={paginaActual}
+        establecerPaginaActual={establecerPaginaActual}
+      />
     </>
   );
-}
+};
 
 export default TablaUsuarios;

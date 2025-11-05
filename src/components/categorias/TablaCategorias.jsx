@@ -1,12 +1,12 @@
 import { Table, Spinner, Button } from "react-bootstrap";
 import BotonOrden from "../ordenamiento/BotonOrden";
 import React, { useState } from "react";
+import Paginacion from "../ordenamiento/Paginacion";
 
-const TablaCategorias = ({ categorias, cargando, abrirModalEdicion, abrirModalEliminacion}) => {
-  const [orden, setOrden] = useState({
-    campo: "id_categoria",
-    direccion: "asc",
-  });
+
+const TablaCategorias = ({ categorias, cargando, abrirModalEdicion, abrirModalEliminacion, totalElementos, elementosPorPagina, paginaActual, establecerPaginaActual }) => {
+ 
+  const [orden, setOrden] = useState({ campo: "id_categoria", direccion: "asc" });
 
   const manejarOrden = (campo) => {
     setOrden((prev) => ({
@@ -28,6 +28,7 @@ const TablaCategorias = ({ categorias, cargando, abrirModalEdicion, abrirModalEl
     return orden.direccion === "asc" ? comparacion : -comparacion;
   });
 
+
   if (cargando) {
     return (
       <>
@@ -41,32 +42,24 @@ const TablaCategorias = ({ categorias, cargando, abrirModalEdicion, abrirModalEl
   return (
     <>
       <Table variant="success" striped bordered hover>
+        
         <thead>
           <tr>
-            <BotonOrden
-              campo="id_categoria"
-              orden={orden}
-              manejarOrden={manejarOrden}
-            >
+            <BotonOrden campo="id_categoria" orden={orden} manejarOrden={manejarOrden}>
               ID
             </BotonOrden>
 
-            <BotonOrden
-              campo="nombre_categoria"
-              orden={orden}
-              manejarOrden={manejarOrden}
-            >
+            <BotonOrden campo="nombre_categoria" orden={orden} manejarOrden={manejarOrden}>
               Nombre Categoría
             </BotonOrden>
 
-            <BotonOrden
-              campo="descripcion_categoria"
-              orden={orden}
-              manejarOrden={manejarOrden}
-            >
+            <BotonOrden campo="descripcion_categoria" orden={orden} manejarOrden={manejarOrden}>
               Descripción Categoría
             </BotonOrden>
-            <th>Acciones</th>
+
+            <BotonOrden campo="" orden={orden} manejarOrden={manejarOrden}>
+              Acciones
+            </BotonOrden>
 
           </tr>
         </thead>
@@ -78,14 +71,15 @@ const TablaCategorias = ({ categorias, cargando, abrirModalEdicion, abrirModalEl
                 <td>{categoria.nombre_categoria}</td>
                 <td>{categoria.descripcion_categoria}</td>
                 <td>
-                  <button
+
+                  <Button
                     variant="outline-warning"
                     size="sm"
                     className="me-2"
                     onClick={() => abrirModalEdicion(categoria)}
                   >
                     <i className="bi bi-pencil"></i>
-                  </button>
+                  </Button>
 
                   <Button
                     variant="outline-danger"
@@ -94,14 +88,23 @@ const TablaCategorias = ({ categorias, cargando, abrirModalEdicion, abrirModalEl
                   >
                     <i className="bi bi-trash"></i>
                   </Button>
+
                 </td>
               </tr>
             );
           })}
         </tbody>
       </Table>
+
+            <Paginacion
+              elementosPorPagina={elementosPorPagina}
+              totalElementos={totalElementos}
+              paginaActual={paginaActual}
+              establecerPaginaActual={establecerPaginaActual}
+            />
+            
     </>
   );
-};
+}
 
 export default TablaCategorias;
