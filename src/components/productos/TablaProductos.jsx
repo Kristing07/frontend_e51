@@ -10,12 +10,9 @@ const TablaProductos = ({
   totalElementos,
   elementosPorPagina,
   paginaActual,
-  establecerPaginaActual,
+  establecerPaginaActual
 }) => {
-  const [orden, setOrden] = useState({
-    campo: "id_producto",
-    direccion: "asc",
-  });
+  const [orden, setOrden] = useState({ campo: "id_producto", direccion: "asc" });
 
   const manejarOrden = (campo) => {
     setOrden((prev) => ({
@@ -49,39 +46,19 @@ const TablaProductos = ({
       <Table striped bordered hover className="mt-3">
         <thead>
           <tr>
-            <BotonOrden
-              campo="id_producto"
-              orden={orden}
-              manejarOrden={manejarOrden}
-            >
+            <BotonOrden campo="id_producto" orden={orden} manejarOrden={manejarOrden}>
               ID
             </BotonOrden>
-            <BotonOrden
-              campo="nombre_producto"
-              orden={orden}
-              manejarOrden={manejarOrden}
-            >
+            <BotonOrden campo="nombre_producto" orden={orden} manejarOrden={manejarOrden}>
               Nombre
             </BotonOrden>
-            <BotonOrden
-              campo="descripcion_producto"
-              orden={orden}
-              manejarOrden={manejarOrden}
-            >
+            <BotonOrden campo="descripcion_producto" orden={orden} manejarOrden={manejarOrden}>
               Descripción
             </BotonOrden>
-            <BotonOrden
-              campo="id_categoria"
-              orden={orden}
-              manejarOrden={manejarOrden}
-            >
+            <BotonOrden campo="id_categoria" orden={orden} manejarOrden={manejarOrden}>
               Categoría
             </BotonOrden>
-            <BotonOrden
-              campo="precio_unitario"
-              orden={orden}
-              manejarOrden={manejarOrden}
-            >
+            <BotonOrden campo="precio_unitario" orden={orden} manejarOrden={manejarOrden}>
               Precio (C$)
             </BotonOrden>
             <BotonOrden campo="stock" orden={orden} manejarOrden={manejarOrden}>
@@ -105,10 +82,10 @@ const TablaProductos = ({
                   <img
                     src={`data:image/png;base64,${prod.imagen}`}
                     alt={prod.nombre_producto}
-                    style={{ maxWidth: "100px" }}
+                    style={{ maxWidth: '100px' }}
                   />
                 ) : (
-                  "Sin imagen"
+                  'Sin imagen'
                 )}
               </td>
               <td>
