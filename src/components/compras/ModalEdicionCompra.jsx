@@ -13,12 +13,7 @@ const ModalEdicionCompra = ({
   };
 
   return (
-    <Modal
-      backdrop="static"
-      show={mostrar}
-      onHide={() => setMostrar(false)}
-      centered
-    >
+    <Modal backdrop="static" show={mostrar} onHide={() => setMostrar(false)} centered>
       <Modal.Header closeButton>
         <Modal.Title>Editar Compra</Modal.Title>
       </Modal.Header>

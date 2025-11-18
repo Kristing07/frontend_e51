@@ -13,7 +13,11 @@ const Tarjeta = ({
   return (
     <Col lg={3} className="mt-3">
       <Card border="">
-        <Card.Img variant="top" src={`data:image/png;base64,${imagen}`} />
+        <Card.Img
+          variant="top"
+          src={`data:image/png;base64,${imagen}`}
+          style={{ height: "300px", objectFit: "cover" }}
+        />
         <Card.Body>
           <Card.Title>
             <strong>{nombre_producto}</strong>

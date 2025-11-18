@@ -1,15 +1,10 @@
-import { Table, Button, Pagination } from "react-bootstrap";
+import { Table, Button, Pagination } from 'react-bootstrap';
+
 
 const TablaVentas = ({
-  ventas,
-  cargando,
-  obtenerDetalles,
-  abrirModalEdicion,
-  abrirModalEliminacion,
-  totalElementos,
-  elementosPorPagina,
-  paginaActual,
-  establecerPaginaActual,
+  ventas, cargando, obtenerDetalles, abrirModalEdicion,
+  abrirModalEliminacion, totalElementos, elementosPorPagina,
+  paginaActual, establecerPaginaActual
 }) => {
   if (cargando) return <div className="text-center">Cargando ventas...</div>;
 
@@ -37,25 +32,13 @@ const TablaVentas = ({
               <td>{v.nombre_empleado}</td>
               <td>C$ {parseFloat(v.total_venta).toFixed(2)}</td>
               <td>
-                <Button
-                  size="sm"
-                  variant="outline-info"
-                  onClick={() => obtenerDetalles(v.id_venta)}
-                >
+                <Button size="sm" variant="outline-info" onClick={() => obtenerDetalles(v.id_venta)}>
                   Detalles
-                </Button>{" "}
-                <Button
-                  size="sm"
-                  variant="outline-warning"
-                  onClick={() => abrirModalEdicion(v)}
-                >
+                </Button>{' '}
+                <Button size="sm" variant="outline-warning" onClick={() => abrirModalEdicion(v)}>
                   Editar
-                </Button>{" "}
-                <Button
-                  size="sm"
-                  variant="outline-danger"
-                  onClick={() => abrirModalEliminacion(v)}
-                >
+                </Button>{' '}
+                <Button size="sm" variant="outline-danger" onClick={() => abrirModalEliminacion(v)}>
                   Eliminar
                 </Button>
               </td>
