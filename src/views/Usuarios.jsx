@@ -3,8 +3,19 @@ import TablaUsuarios from "../components/usuarios/TablaUsuarios";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
 import ModalRegistroUsuarios from "../components/usuarios/ModalRegistroUsuario";
+import ModalEdicionUsuario from "../components/usuarios/ModalEdicionUsuario";
+import ModalEliminarUsuario from "../components/usuarios/ModalEliminarUsuarios";
 
 const Usuarios = () => {
+  const [mostrarModalEdicion, setMostrarModalEdicion] = useState(false);
+  const [mostrarModalEliminar, setMostrarModalEliminar] = useState(false);
+
+  const [usuarioEditado, setUsuarioEditado] = useState(null);
+  const [usuarioEliminar, setUsuarioEliminar] = useState(null);
+
+  const [paginaActual, establecerPaginaActual] = useState(1);
+  const elementosPorPagina = 5; // Número de productos por página
+
   const [usuarios, setUsuarios] = useState([]);
   const [cargando, setCargando] = useState(true);
 
@@ -13,28 +24,85 @@ const Usuarios = () => {
 
   const [mostrarModal, setMostrarModal] = useState(false);
   const [nuevoUsuario, setNuevoUsuario] = useState({
-    usuario: '',
-    contraseña: ''
+    usuario: "",
+    contraseña: "",
   });
+
+  // Calcular productos paginados
+  const usuariosPaginados = usuariosFiltrados.slice(
+    (paginaActual - 1) * elementosPorPagina,
+    paginaActual * elementosPorPagina
+  );
+
+  const abrirModalEdicion = (usuario) => {
+    setUsuarioEditado({ ...usuario });
+    setMostrarModalEdicion(true);
+  };
+
+  const guardarEdicion = async () => {
+    if (!usuarioEditado.usuario.trim()) return;
+    try {
+      const respuesta = await fetch(
+        `http://localhost:3000/api/actualizarusuario/${usuarioEditado.id_usuario}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(usuarioEditado),
+        }
+      );
+      if (!respuesta.ok) throw new Error("Error al actualizar");
+      setMostrarModalEdicion(false);
+      await obtenerUsuarios();
+    } catch (error) {
+      console.error("Error al editar el usuario:", error);
+      alert("No se pudo actualizar el usuario.");
+    }
+  };
+
+  const abrirModalEliminacion = (usuario) => {
+    setUsuarioEliminar(usuario);
+    setMostrarModalEliminar(true);
+  };
+
+  const confirmarEliminacion = async () => {
+    try {
+      const respuesta = await fetch(
+        `http://localhost:3000/api/eliminarusuario/${usuarioEliminar.id_usuario}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!respuesta.ok) throw new Error("Error al eliminar");
+      setMostrarModalEliminar(false);
+      setUsuarioEliminar(null);
+      await obtenerUsuarios();
+    } catch (error) {
+      console.error("Error al eliminar el usuario:", error);
+      alert("No se pudo eliminar el usuario.");
+    }
+  };
 
   const manejarCambioInput = (e) => {
     const { name, value } = e.target;
-    setNuevoUsuario(prev => ({ ...prev, [name]: value }));
+    setNuevoUsuario((prev) => ({ ...prev, [name]: value }));
   };
 
   const agregarUsuario = async () => {
     if (!nuevoUsuario.usuario.trim()) return;
     try {
-      const respuesta = await fetch('http://localhost:3000/api/registrarUsuario', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(nuevoUsuario)
-      });
+      const respuesta = await fetch(
+        "http://localhost:3000/api/registrarUsuario",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(nuevoUsuario),
+        }
+      );
 
-      if (!respuesta.ok) throw new Error('Error al guardar');
+      if (!respuesta.ok) throw new Error("Error al guardar");
 
       // Limpiar y cerrar
-      setNuevoUsuario({ usuario: '', contraseña: '' });
+      setNuevoUsuario({ usuario: "", contraseña: "" });
       setMostrarModal(false);
       await obtenerUsuarios(); // Refresca la lista
     } catch (error) {
@@ -57,8 +125,7 @@ const Usuarios = () => {
       console.long(error.message);
       setCargando(false);
     }
-  }
-
+  };
 
   const manejarCambioBusqueda = (e) => {
     const texto = e.target.value.toLowerCase();
@@ -77,30 +144,34 @@ const Usuarios = () => {
 
   return (
     <>
-
-      <Row>
-        <Col lg={5} md={8} sm={8} xs={7}>
-          <CuadroBusquedas
-            textoBusqueda={textoBusqueda}
-            manejarCambioBusqueda={manejarCambioBusqueda}
-          />
-        </Col>
-
-        <Col className="text-end">
-          <Button
-            variant="success"
-            onClick={() => setMostrarModal(true)}
-          >
-            + Nueva Usuario
-          </Button>
-        </Col>
-
-      </Row>
       <Container className="mt-4">
+        <Row>
+          <Col lg={5} md={8} sm={8} xs={7}>
+            <CuadroBusquedas
+              textoBusqueda={textoBusqueda}
+              manejarCambioBusqueda={manejarCambioBusqueda}
+            />
+          </Col>
+
+          <Col className="text-end">
+            <Button variant="success" onClick={() => setMostrarModal(true)}
+              >
+              + Nueva Usuario
+            </Button>
+          </Col>
+
+        </Row>
+
         <h4>Usuarios</h4>
         <TablaUsuarios
-          usuarios={usuariosFiltrados}
+          usuarios={usuariosPaginados}
           cargando={cargando}
+          abrirModalEdicion={abrirModalEdicion}
+          abrirModalEliminacion={abrirModalEliminacion}
+          totalElementos={usuarios.length} // Total de categorias
+          elementosPorPagina={elementosPorPagina} // Elementos por página
+          paginaActual={paginaActual} // Página actual
+          establecerPaginaActual={establecerPaginaActual} // Método para cambiar página
         />
 
         <ModalRegistroUsuarios
@@ -110,8 +181,23 @@ const Usuarios = () => {
           manejarCambioInput={manejarCambioInput}
           agregarUsuario={agregarUsuario}
         />
+
+        <ModalEdicionUsuario
+          mostrar={mostrarModalEdicion}
+          setMostrar={setMostrarModalEdicion}
+          usuarioEditado={usuarioEditado}
+          setUsuarioEditado={setUsuarioEditado}
+          guardarEdicion={guardarEdicion}
+        />
+
+        <ModalEliminarUsuario
+          mostrar={mostrarModalEliminar}
+          setMostrar={setMostrarModalEliminar}
+          usuario={usuarioEliminar}
+          confirmarEliminacion={confirmarEliminacion}
+        />
       </Container>
     </>
   );
-}
+};
 export default Usuarios;

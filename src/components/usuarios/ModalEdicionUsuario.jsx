@@ -1,20 +1,24 @@
 import { Modal, Form, Button } from "react-bootstrap";
 
-const ModalEdicionUsuario= ({
+const ModalEdicionUsuario = ({
   mostrar,
   setMostrar,
   usuarioEditado,
   setUsuarioEditado,
-  guardarEdicion
+  guardarEdicion,
 }) => {
-
   const manejarCambio = (e) => {
     const { name, value } = e.target;
     setUsuarioEditado((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <Modal backdrop="static" show={mostrar} onHide={() => setMostrar(false)} centered>
+    <Modal
+      backdrop="static"
+      show={mostrar}
+      onHide={() => setMostrar(false)}
+      centered
+    >
       <Modal.Header closeButton>
         <Modal.Title>Editar Usuario</Modal.Title>
       </Modal.Header>
